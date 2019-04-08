@@ -26,7 +26,7 @@ namespace App.Data.Infrastructure
         }
         #endregion
 
-        protected RepositoryBase(IDbFactory dbFactory)
+        public RepositoryBase(IDbFactory dbFactory)
         {
             DbFactory = dbFactory;
             dbSet = DbContext.Set<T>();
@@ -55,7 +55,7 @@ namespace App.Data.Infrastructure
         }
         public virtual void DeleteMulti(Expression<Func<T, bool>> where)
         {
-            IEnumerable<T> objects = dbSet.Where<T>(where).AsEnumerable();
+            IQueryable<T> objects = dbSet.Where<T>(where).AsQueryable();
             foreach (T obj in objects)
                 dbSet.Remove(obj);
         }
@@ -65,9 +65,9 @@ namespace App.Data.Infrastructure
             return dbSet.Find(id);
         }
 
-        public virtual IEnumerable<T> GetMany(Expression<Func<T, bool>> where, string includes)
+        public virtual IQueryable<T> GetMany(Expression<Func<T, bool>> where, string includes)
         {
-            return dbSet.Where(where).ToList();
+            return dbSet.Where(where).AsQueryable();
         }
 
 
@@ -76,7 +76,7 @@ namespace App.Data.Infrastructure
             return dbSet.Count(where);
         }
 
-        public IEnumerable<T> GetAll(string[] includes = null)
+        public IQueryable<T> GetAll(string[] includes = null)
         {
             //HANDLE INCLUDES FOR ASSOCIATED OBJECTS IF APPLICABLE
             if (includes != null && includes.Count() > 0)
@@ -102,7 +102,7 @@ namespace App.Data.Infrastructure
             return dataContext.Set<T>().FirstOrDefault(expression);
         }
 
-        public virtual IEnumerable<T> GetMulti(Expression<Func<T, bool>> predicate, string[] includes = null)
+        public virtual IQueryable<T> GetMulti(Expression<Func<T, bool>> predicate, string[] includes = null)
         {
             //HANDLE INCLUDES FOR ASSOCIATED OBJECTS IF APPLICABLE
             if (includes != null && includes.Count() > 0)
@@ -116,7 +116,7 @@ namespace App.Data.Infrastructure
             return dataContext.Set<T>().Where<T>(predicate).AsQueryable<T>();
         }
 
-        public virtual IEnumerable<T> GetMultiPaging(Expression<Func<T, bool>> predicate, out int total, int index = 0, int size = 20, string[] includes = null)
+        public virtual IQueryable<T> GetMultiPaging(Expression<Func<T, bool>> predicate, out int total, int index = 0, int size = 20, string[] includes = null)
         {
             int skipCount = index * size;
             IQueryable<T> _resetSet;
@@ -142,6 +142,11 @@ namespace App.Data.Infrastructure
         public bool CheckContains(Expression<Func<T, bool>> predicate)
         {
             return dataContext.Set<T>().Count<T>(predicate) > 0;
+        }
+
+        public T GetSingleById(string id)
+        {
+            return dbSet.Find(id);
         }
         #endregion
     }

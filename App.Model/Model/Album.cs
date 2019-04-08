@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 
 namespace App.Model.Model
 {
+    [Table("Albums")]
     public class Album
     {
         public Album()

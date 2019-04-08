@@ -1,4 +1,6 @@
-﻿using System;
+﻿using App.Model.Model;
+using App.Service.Music;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -8,10 +10,22 @@ namespace App.Website.Controllers
 {
     public class MusicController : Controller
     {
+        IBaiHatService _bhService;
+
+        public MusicController(IBaiHatService bhService)
+        {
+            this._bhService = bhService;
+        }
+
         // GET: Music
         public ActionResult Index()
         {
-            return View();
+            BaiHat viewModel = new BaiHat();
+
+            viewModel = _bhService.GetSingleById(1);
+
+
+            return View(viewModel);
         }
 
         // GET: Music/Details/5
@@ -19,6 +33,11 @@ namespace App.Website.Controllers
         {
             return View();
         }
+
+
+
+
+
 
         // GET: Music/Create
         public ActionResult Create()
