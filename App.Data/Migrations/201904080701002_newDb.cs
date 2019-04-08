@@ -34,16 +34,15 @@ namespace App.Data.Migrations
                         UpdatedBy = c.String(maxLength: 256),
                         MetaKeyword = c.String(maxLength: 256),
                         MetaDescription = c.String(maxLength: 256),
-                        Status = c.Boolean(nullable: false),
                     })
                 .PrimaryKey(t => t.MaBaiHat)
                 .ForeignKey("dbo.Albums", t => t.MaAlbum, cascadeDelete: true)
-                .ForeignKey("dbo.CaSis", t => t.MaCaSi, cascadeDelete: true)
+                .ForeignKey("dbo.CaSies", t => t.MaCaSi, cascadeDelete: true)
                 .Index(t => t.MaCaSi)
                 .Index(t => t.MaAlbum);
             
             CreateTable(
-                "dbo.CaSis",
+                "dbo.CaSies",
                 c => new
                     {
                         MaCaSi = c.Int(nullable: false, identity: true),
@@ -55,11 +54,11 @@ namespace App.Data.Migrations
         
         public override void Down()
         {
-            DropForeignKey("dbo.BaiHats", "MaCaSi", "dbo.CaSis");
+            DropForeignKey("dbo.BaiHats", "MaCaSi", "dbo.CaSies");
             DropForeignKey("dbo.BaiHats", "MaAlbum", "dbo.Albums");
             DropIndex("dbo.BaiHats", new[] { "MaAlbum" });
             DropIndex("dbo.BaiHats", new[] { "MaCaSi" });
-            DropTable("dbo.CaSis");
+            DropTable("dbo.CaSies");
             DropTable("dbo.BaiHats");
             DropTable("dbo.Albums");
         }

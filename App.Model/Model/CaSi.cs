@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 
 namespace App.Model.Model
 {
+    [Table("CaSies")]
     public class CaSi
     {
         [Key]

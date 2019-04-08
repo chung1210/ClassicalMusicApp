@@ -1,4 +1,4 @@
-﻿
+﻿@model  App.Model.Model.BaiHat
 @{
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_MainLayout.cshtml";
@@ -29,8 +29,9 @@
                             <div class="sl-number">
                                 <h5>1.</h5>
                             </div>
-                            <div class="music-thumb"><a href="@Url.Action("Details", new { id = 1 })" >
-                                <img src="~/Asset/img/bg-img/25.jpg" alt="">
+                            <div class="music-thumb">
+                                <a href="@Url.Action("Details", new { id = 1 })">
+                                    <img src=@Model.MoreImage alt=""> //"~/Asset/img/bg-img/25.jpg"
                                 </a>
                             </div>
                             <div class="audio-player">
@@ -255,4 +256,4 @@
     </section>
     <!-- Music Charts Portfolio Area End -->
 
-  </div>
+</div>
